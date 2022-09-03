@@ -9,6 +9,8 @@ soup = bs(request.text, 'html.parser')
 
 titletags  = soup.find_all('a', 'js-teaser-heading-link')
 subtitletags = soup.find_all('a', 'js-teaser-standfirst-link')
+datetags= soup.find_all('time','o-date')
+dates=[]
 titles=[]
 subtitles=[]
 links=[]
@@ -21,9 +23,13 @@ for sibling in titletags:
 for sibling in subtitletags:
     subtitle = sibling.text
     subtitles.append(subtitle)
+
+for sibling in datetags:
+    dates.append(sibling['datetime'])
 i=0
 for title in titles:
     new={}
+    new['date']=dates[i]
     new['title']=title
     new['subtitle']=subtitles[i]
     new['link']=links[i]
