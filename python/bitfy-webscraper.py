@@ -1,5 +1,6 @@
 import requests, json
 from bs4 import BeautifulSoup as bs
+from crud_module import update_bitfy
 
 url = "https://www.ft.com/bitcoin"
 headers = {'User-Agent' :'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.5 Safari/605.1.15'}
@@ -18,7 +19,7 @@ news=[]
 for sibling in titletags:
     title = sibling.text
     titles.append(title)
-    links.append(url + sibling['href'])
+    links.append('https://www.ft.com' + sibling['href'])
 
 for sibling in subtitletags:
     subtitle = sibling.text
@@ -36,3 +37,12 @@ for title in titles:
     news.append(new)
     i+=1
 print(news)
+
+# Update database
+i=0
+for title in titles:
+    try:
+        update_bitfy(dates[i],title,subtitles[i],links[i])
+    except:
+        pass
+    i+=1
